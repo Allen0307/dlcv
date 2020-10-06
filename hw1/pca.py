@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 import math
 import sys
@@ -24,38 +25,36 @@ for person in range(40):
 trainset = np.array(trainset)
 testset = np.array(testset)
 
-#輸入是一個拉成一條線(1*2576)的矩陣，輸出是將此矩陣轉成(56*46)的np.array
-def arraytoimage(array):
-    eigenface_array = []
-    for i in range(2576):
-        if i % 46 == 0:
-            row = []
-            if i != 0:
-                eigenface_array.append(row)
-        row.append(array[i])
-        if i == 2575:
-            eigenface_array.append(row)
-    return np.array(eigenface_array)
-
 #==================================================================
-# sum_vector = [0] * 2576
+sum_vector = [0] * 2576
 
-# for row in range(360):
-#     for entry in range(2576):
-#         sum_vector[entry] += trainset[row][entry]
-# for entry in range(2576):
-#     sum_vector[entry] = int(sum_vector[entry] / 360)
-# eigenface = Image.fromarray(np.uint8(arraytoimage(sum_vector)))
-# eigenface.show()
+for row in range(360):
+    for entry in range(2576):
+        sum_vector[entry] += trainset[row][entry]
+for entry in range(2576):
+    sum_vector[entry] = int(sum_vector[entry] / 360)
+
+sum_vector = np.array(sum_vector)
+plt.subplot(1, 5, 1)
+plt.title("mean")
+plt.imshow(sum_vector.reshape(56,46), cmap='gray', vmin=0, vmax=255)
+
 #==================================================================
 new_data = pca.fit_transform(trainset)
+T_inverse = pca.inverse_transform
 eigenvector = pca.components_
 
-eigenface_1 = []
+for i in range(4):
+    plt.subplot(1, 5, i + 2)
+    plt.title("i = " + str(i + 1))
+    plt.imshow(eigenvector[i].reshape(56,46), cmap='gray')
+plt.show()
+
 answer = [0] * 2576
-for i in range(3):
+for i in range(360):
     answer += eigenvector[0] * new_data[i][0]
-print(answer)
+
+
 # for i in range(len(eigenvector)):
 #     eigenface = Image.fromarray(np.uint8(arraytoimage(eigenvector[i])))
 #     eigenface.show()
