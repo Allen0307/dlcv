@@ -29,7 +29,7 @@ for i in range(9):
     for j in range(40):
         train_label.append(j + 1)
 for k in range(40):
-    test_label.append(i + 1)
+    test_label.append(k + 1)
 
 trainset = np.array(trainset)
 testset = np.array(testset)
@@ -88,7 +88,47 @@ testset = np.array(testset)
 
 #==================================================================
 #2-4
-f = open('./2-problem/2-4', 'w')
+# f = open('./2-problem/2-4', 'w')
+# n = [3, 50, 170]
+# k = [1, 3, 5]
+
+# label_1 = train_label[0:240]
+# label_2 = train_label[120:]
+# label_3 = train_label[240:] + train_label[0:120]
+
+# def model(n, k):
+#     pca = PCA(n_components = n)
+#     knn = KNeighborsClassifier(n_neighbors = k)
+#     person_eigenvalue = pca.fit_transform(trainset)
+#     pca_trainset = pca.inverse_transform(person_eigenvalue)
+#     trainset_1 = np.concatenate((pca_trainset[0:120], pca_trainset[120:240]))
+#     trainset_2 = np.concatenate((pca_trainset[120:240], pca_trainset[240:]))
+#     trainset_3 = np.concatenate((pca_trainset[240:], pca_trainset[0:120]))
+#     train = [trainset_1, trainset_2, trainset_3]
+#     label = [label_1, label_2, label_3]
+#     position = [2, 0, 1]
+#     best_acc = 0
+#     best_fold = 0
+#     for i in range(3):
+#         knn.fit(train[i], label[i])
+#         predict = knn.predict(train[position[i]])
+#         correct = 0  
+#         total = 0
+#         for index in range(len(predict)):
+#             if predict[index] == label[i][index]:
+#                 correct += 1
+#             total += 1
+#         if correct / total >= best_acc:
+#             best_acc = correct / total
+#             best_fold = i
+#     f.write("n = " + str(n).ljust(3) + ", k = " + str(k).ljust(2) +  ", valid_acc = " + str(best_acc) + '\n')
+
+# for i in k:
+#     for j in n:
+#         model(j, i)
+#==================================================================
+#2-5
+f = open('./2-problem/2-5', 'w')
 n = [3, 50, 170]
 k = [1, 3, 5]
 
@@ -119,11 +159,17 @@ def model(n, k):
                 correct += 1
             total += 1
         if correct / total >= best_acc:
+            test_correct = 0
+            test_total = 0
             best_acc = correct / total
             best_fold = i
-    f.write("n = " + str(n) + ", k = " + str(k) + ", fold = " + str(best_fold) + ", acc = " + str(best_acc) + '\n')
+            test_predict = knn.predict(testset)
+            for hello in range(len(test_predict)):
+                if test_predict[hello] == test_label[hello]:
+                    test_correct += 1
+                test_total += 1
+    f.write("n = " + str(n).ljust(3) + ", k = " + str(k).ljust(2) +  ", test_acc = " + str(test_correct / test_total) + '\n')
 
 for i in k:
     for j in n:
         model(j, i)
-#==================================================================
