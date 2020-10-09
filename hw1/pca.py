@@ -33,7 +33,7 @@ trainset = np.array(trainset)
 testset = np.array(testset)
 
 #==================================================================
-#mean eigenface
+#mean eigenface 2-1
 
 # sum_vector = [0] * 2576
 
@@ -49,7 +49,7 @@ testset = np.array(testset)
 # plt.imshow(sum_vector.reshape(56,46), cmap='gray', vmin=0, vmax=255)
 
 #==================================================================
-#the first 4 eigenface
+#the first 4 eigenface 2-1
 
 # pca = PCA(n_components = 4)
 # person_eigenvalue = pca.fit_transform(trainset)
@@ -62,7 +62,7 @@ testset = np.array(testset)
 # plt.show()
 #==================================================================
 
-#2-1
+#2-2 2-3
 # im = Image.open(picture_path + "/" + '2' + "_" + '1' + ".png")
 # data = np.array(im)
 
