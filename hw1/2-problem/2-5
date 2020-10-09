@@ -1,9 +1,1 @@
-n = 3  , k = 1 , test_acc = 0.625
-n = 50 , k = 1 , test_acc = 0.875
-n = 170, k = 1 , test_acc = 0.9
-n = 3  , k = 3 , test_acc = 0.55
-n = 50 , k = 3 , test_acc = 0.85
-n = 170, k = 3 , test_acc = 0.875
-n = 3  , k = 5 , test_acc = 0.625
-n = 50 , k = 5 , test_acc = 0.825
-n = 170, k = 5 , test_acc = 0.8
+n = 170, k = 1, test_acc = 0.95

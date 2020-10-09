@@ -163,7 +163,7 @@ def model(n, k):
     fold = [fold_1, fold_2, fold_3]
 
     best_acc = 0
-    best_fold = 0
+
     for i in range(3):
         knn.fit(train[i], label[i])
         predict = knn.predict(position[i])
@@ -174,17 +174,32 @@ def model(n, k):
                 correct += 1
             total += 1
         if correct / total >= best_acc:
-            test_correct = 0
-            test_total = 0
             best_acc = correct / total
-            best_fold = i
-            test_predict = knn.predict(testset)
-            for hello in range(len(test_predict)):
-                if test_predict[hello] == test_label[hello]:
-                    test_correct += 1
-                test_total += 1
-    f.write("n = " + str(n).ljust(3) + ", k = " + str(k).ljust(2) +  ", test_acc = " + str(test_correct / test_total) + '\n')
 
+    return best_acc
+
+best_parameter = 0
 for i in k:
     for j in n:
-        model(j, i)
+        acc = model(j, i)
+
+        if acc >= best_parameter:
+            best_parameter = acc
+            best_k = i
+            best_n = j
+
+pca = PCA(n_components = best_n)
+knn = KNeighborsClassifier(n_neighbors = best_k)
+person_eigenvalue = pca.fit_transform(trainset)
+pca_trainset = pca.inverse_transform(person_eigenvalue)
+knn.fit(pca_trainset, train_label)
+predict = knn.predict(testset)
+
+correct = 0
+total = 0
+for i in range(len(predict)):
+    if predict[i] == test_label[i]:
+        correct += 1
+    total += 1
+
+f.write('n = ' + str(best_n) + ', k = ' + str(best_k) + ', test_acc = ' + str(correct / total))
