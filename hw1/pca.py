@@ -15,14 +15,12 @@ for image in range(10):
     for person in range(40):
         im = Image.open(picture_path + "/" + str(person + 1) + "_" + str(image + 1) + ".png")
         data = np.array(im)
-        picture = [] #放每張picture的矩陣
-        for row in range(56):
-            for column in range(46):
-                picture.append(data[row][column])
+        picture = data.reshape(1, 2576)
         if image == 9:
-            testset.append(picture)
+            testset.append(picture[0])
         else:
-            trainset.append(picture)
+            trainset.append(picture[0])
+        
 train_label = []
 test_label = []
 for i in range(9):
@@ -96,26 +94,35 @@ testset = np.array(testset)
 # label_2 = train_label[120:]
 # label_3 = train_label[240:] + train_label[0:120]
 
+# fold_1 = train_label[240:]
+# fold_2 = train_label[0:120]
+# fold_3 = train_label[120:240]
+
 # def model(n, k):
 #     pca = PCA(n_components = n)
 #     knn = KNeighborsClassifier(n_neighbors = k)
+
 #     person_eigenvalue = pca.fit_transform(trainset)
 #     pca_trainset = pca.inverse_transform(person_eigenvalue)
-#     trainset_1 = np.concatenate((pca_trainset[0:120], pca_trainset[120:240]))
-#     trainset_2 = np.concatenate((pca_trainset[120:240], pca_trainset[240:]))
+
+#     trainset_1 = pca_trainset[0:240]
+#     trainset_2 = pca_trainset[120:]
 #     trainset_3 = np.concatenate((pca_trainset[240:], pca_trainset[0:120]))
 #     train = [trainset_1, trainset_2, trainset_3]
 #     label = [label_1, label_2, label_3]
-#     position = [2, 0, 1]
+
+#     position = [pca_trainset[240:], pca_trainset[0:120], pca_trainset[120:240]]
+#     fold = [fold_1, fold_2, fold_3]
+
 #     best_acc = 0
 #     best_fold = 0
 #     for i in range(3):
 #         knn.fit(train[i], label[i])
-#         predict = knn.predict(train[position[i]])
+#         predict = knn.predict(position[i])
 #         correct = 0  
 #         total = 0
 #         for index in range(len(predict)):
-#             if predict[index] == label[i][index]:
+#             if predict[index] == fold[i][index]:
 #                 correct += 1
 #             total += 1
 #         if correct / total >= best_acc:
@@ -136,26 +143,34 @@ label_1 = train_label[0:240]
 label_2 = train_label[120:]
 label_3 = train_label[240:] + train_label[0:120]
 
+fold_1 = train_label[240:]
+fold_2 = train_label[0:120]
+fold_3 = train_label[120:240]
+
 def model(n, k):
     pca = PCA(n_components = n)
     knn = KNeighborsClassifier(n_neighbors = k)
     person_eigenvalue = pca.fit_transform(trainset)
     pca_trainset = pca.inverse_transform(person_eigenvalue)
+
     trainset_1 = np.concatenate((pca_trainset[0:120], pca_trainset[120:240]))
     trainset_2 = np.concatenate((pca_trainset[120:240], pca_trainset[240:]))
     trainset_3 = np.concatenate((pca_trainset[240:], pca_trainset[0:120]))
     train = [trainset_1, trainset_2, trainset_3]
     label = [label_1, label_2, label_3]
-    position = [2, 0, 1]
+
+    position = [pca_trainset[240:], pca_trainset[0:120], pca_trainset[120:240]]
+    fold = [fold_1, fold_2, fold_3]
+
     best_acc = 0
     best_fold = 0
     for i in range(3):
         knn.fit(train[i], label[i])
-        predict = knn.predict(train[position[i]])
+        predict = knn.predict(position[i])
         correct = 0  
         total = 0
         for index in range(len(predict)):
-            if predict[index] == label[i][index]:
+            if predict[index] == fold[i][index]:
                 correct += 1
             total += 1
         if correct / total >= best_acc:
