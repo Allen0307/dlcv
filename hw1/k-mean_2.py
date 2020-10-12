@@ -23,9 +23,10 @@ for row in range(1024):
         node['b'] = data[row][column][2]
         compute.append(node)
 
-plt.subplot(1, 6, 1)
-plt.title("Original")
-plt.imshow(data)
+# plt.subplot(1, 6, 1)
+# plt.title("Original")
+# plt.imshow(data)
+
 
 def k_mean(k_SIZE, k_num):
     #initial k's point
@@ -41,7 +42,7 @@ def k_mean(k_SIZE, k_num):
         min_distance = 100000
         for i in range(k_SIZE):
             distance_ = 'distance_' + str(i)
-            distance = math.sqrt((a['r'] - initial[i][0])**2 + (a['g'] - initial[i][1])**2 + (a['b'] - initial[i][2])**2 + (a['row'] - position[i][0])**2 + (a['column'] - position[i][1])**2)
+            distance = math.sqrt((a['r'] - initial[i][0])**2 + (a['g'] - initial[i][1])**2 + (a['b'] - initial[i][2])**2 + 0.1 * (a['row'] - position[i][0])**2 + 0.1 * (a['column'] - position[i][1])**2)
             if(distance < min_distance):
                 min_distance = distance
                 min_num = i
@@ -50,6 +51,7 @@ def k_mean(k_SIZE, k_num):
 
     for hello in range(5):
         print("epoch[", hello + 1, "] running")
+
         for i in range(len(compute)):
             norm2(compute[i], initial)
 
@@ -68,7 +70,7 @@ def k_mean(k_SIZE, k_num):
             sum_pos[compute[i]['class']][0] += compute[i]['row']
             sum_pos[compute[i]['class']][1] += compute[i]['column']
             count[compute[i]['class']] += 1
-        
+
         for i in range(k_SIZE):
             if count[i] != 0:
                 for j in range(3):
@@ -94,15 +96,18 @@ def k_mean(k_SIZE, k_num):
         answer.append(row_init)
     answer = np.array(answer)
 
-    plt.subplot(1, 6, k_num + 2)
+    # plt.subplot(1, 6, k_num + 2)
     plt.title('k = ' + str(k_SIZE))
     plt.imshow(answer)
     print("Finish k = ", k_SIZE, " !")
 
-k_SIZE = [2, 4, 8, 16, 32]
-k_num = 0
-for i in k_SIZE:
-    k_mean(i, k_num)
-    k_num += 1
+# k_SIZE = [2, 4, 8, 16, 32]
+# k_num = 0
+# for i in k_SIZE:
+#     k_mean(i, k_num)
+#     k_num += 1
+# plt.show()
+
+k_mean(32, 1)
 plt.show()
 

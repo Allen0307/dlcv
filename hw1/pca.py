@@ -35,31 +35,32 @@ testset = np.array(testset)
 #==================================================================
 #mean eigenface 2-1
 
-# sum_vector = [0] * 2576
+sum_vector = [0] * 2576
 
-# for row in range(360):
-#     for entry in range(2576):
-#         sum_vector[entry] += trainset[row][entry]
-# for entry in range(2576):
-#     sum_vector[entry] = int(sum_vector[entry] / 360)
+for row in range(360):
+    for entry in range(2576):
+        sum_vector[entry] += trainset[row][entry]
+for entry in range(2576):
+    sum_vector[entry] = int(sum_vector[entry] / 360)
 
-# sum_vector = np.array(sum_vector)
-# plt.subplot(1, 5, 1)
-# plt.title("mean")
-# plt.imshow(sum_vector.reshape(56,46), cmap='gray', vmin=0, vmax=255)
+sum_vector = np.array(sum_vector)
+plt.subplot(1, 5, 1)
+plt.title("mean")
+plt.imshow(sum_vector.reshape(56,46), cmap='gray', vmin=0, vmax=255)
 
 #==================================================================
 #the first 4 eigenface 2-1
 
-# pca = PCA(n_components = 4)
-# person_eigenvalue = pca.fit_transform(trainset)
-# eigenvector = pca.components_
+pca = PCA(n_components = 4)
+person_eigenvalue = pca.fit_transform(trainset)
+eigenvector = pca.components_
 
-# for i in range(4):
-#     plt.subplot(1, 5, i + 2)
-#     plt.title("i = " + str(i + 1))
-#     plt.imshow(eigenvector[i].reshape(56,46), cmap='gray')
-# plt.show()
+for i in range(4):
+    plt.subplot(1, 5, i + 2)
+    plt.title("i = " + str(i + 1))
+    plt.imshow(eigenvector[i].reshape(56,46), cmap='gray')
+plt.show()
+sys.exit()
 #==================================================================
 
 #2-2 2-3
