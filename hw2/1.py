@@ -9,6 +9,7 @@ import os
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image
+import sys
 import csv
 
 use_cuda = torch.cuda.is_available()
@@ -16,6 +17,8 @@ device = torch.device("cuda" if use_cuda else "cpu")
 
 test_path = sys.argv[1]
 output_path = sys.argv[2]
+output_name = 'test_pred.csv'
+output_path = os.path.join(output_path,output_name)
 class Allen(Dataset): 
     def __init__(self, transform = None):
         self.transform = transform
@@ -24,7 +27,7 @@ class Allen(Dataset):
         self.len = len(self.filename)
 
     def __getitem__(self, index):
-        path = os.path.join(self.common_path + str(self.filename[index]))
+        path = os.path.join(self.common_path , str(self.filename[index]))
         im = Image.open(path)
 
         if self.transform is not None:

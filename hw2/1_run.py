@@ -1,6 +1,6 @@
 import csv
 import sys
-readfile_path = 'hw2_data/p1_data/myans.csv'
+readfile_path = 'hw2_data/p1_data/val_gt.csv'
 
 with open(readfile_path, newline='') as csvfile:
 
