@@ -1,0 +1,1 @@
+python3 hw3_p4.py $1 $2 $3
